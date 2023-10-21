@@ -6,5 +6,10 @@ So I'll make a script which can be run on a fresh install of JJ Ubuntu, to give 
 1. containerd
 2. kubeadm
 
+Command:
+bash```
+wget -O kasu.sh "github.com/lu1a/kasu/kasu.sh"
+```
+
 so that I can either make a control plane or join into one. 👍
 Suggestions/help/PRs welcome!
