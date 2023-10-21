@@ -24,7 +24,7 @@ echo "$MODE deps will be installed"
 gum spin --spinner line --title "🛜 Turning swap off, setting ip-forwarding on..." -- apt update && apt upgrade -y;
 apt-get install -y apt-transport-https ca-certificates;
 
-swapoff -a &&
+swapoff -a;
 { head -n -1 /etc/fstab && tail -n 1 /etc/fstab | sed 's/^/#/'; } > /etc/fstab-temp && mv /etc/fstab-temp /etc/fstab;
 
 sysctl net.ipv4.ip_forward=1;
