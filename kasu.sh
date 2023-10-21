@@ -76,15 +76,22 @@ gum spin --spinner line --title "📦 Pulling k8s images" -- kubeadm config imag
 
 if [ $MODE == "control-plane" ]; then
     echo "⚙️ Initialising the control plane"
-    kubeadm init
-    gum spin --spinner line --title "✨ Final touches: KUBECONFIG=/etc/kubernetes/admin.conf, activating cilium" -- mkdir -p $HOME/.kube;
-    cp -i /etc/kubernetes/admin.conf $HOME/.kube/config;
-    chown $(id -u):$(id -g) $HOME/.kube/config;
-    export KUBECONFIG=/etc/kubernetes/admin.conf;
+    kubeadm init --skip-phases=addon/kube-proxy
+    gum spin --spinner line --title "✨ Final touches: KUBECONFIG=/etc/kubernetes/admin.conf, activating cilium" -- mkdir -p $HOME/.kube &&
+    cp -i /etc/kubernetes/admin.conf $HOME/.kube/config &&
+    chown $(id -u):$(id -g) $HOME/.kube/config &&
+    export KUBECONFIG=/etc/kubernetes/admin.conf &&
 
-    helm install cilium cilium/cilium --version 1.14.2 --namespace kube-system;
+    # helm install cilium cilium/cilium --version 1.14.2 --namespace kube-system;
+    curl -LO https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz &&
+    sudo tar xzvfC cilium-linux-amd64.tar.gz /usr/local/bin &&
+    rm cilium-linux-amd64.tar.gz &&
+    cilium install
+
     echo "✅ Done! Check it yourself with crictl ps"
 elif [ $MODE == "worker" ]; then
     JOIN_COMMAND=$(gum input --width 500 --placeholder "copy-paste your 'kubeadm join YOUR_TOKENS_HERE' (as 1 line!!!)")
     eval "$JOIN_COMMAND"
+    sleep 3
+    systemctl restart containerd.service
 fi
