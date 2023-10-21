@@ -5,8 +5,7 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-if ! command -v gum &> /dev/null
-then
+if hash gum 2>/dev/null; then
     mkdir -p /etc/apt/keyrings
     curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
     echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
