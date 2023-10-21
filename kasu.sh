@@ -7,10 +7,13 @@ fi
 
 apt-get install -y curl
 
-mkdir -p /etc/apt/keyrings
-curl -fsSL https://repo.charm.sh/apt/gpg.key | gpg --batch --yes --dearmor -o /etc/apt/keyrings/charm.gpg
-echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | tee /etc/apt/sources.list.d/charm.list
-apt update && apt-get -y install gum
+mkdir -p /etc/apt/keyrings &&
+curl -fsSL https://repo.charm.sh/apt/gpg.key | gpg --batch --yes --dearmor -o /etc/apt/keyrings/charm.gpg &&
+echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | tee /etc/apt/sources.list.d/charm.list &&
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | gpg --batch --yes --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg &&
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list &&
+apt update &&
+apt-get -y install gum
 
 gum style --foreground 255 'Pick the mode'
 MODE=$(gum choose "worker" "control-plane")
@@ -51,10 +54,7 @@ pull-image-on-create: false" | sudo tee /etc/crictl.yaml
 
 # echo "🚢 Installed containerd-1.7.6 and runc-1.1.9"
 
-gum spin --spinner line --title "☸️ Installing kubelet kubeadm kubectl, version 1.28" -- curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | gpg --batch --yes --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg;
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list;
-apt-get update;
-apt-get install -y kubelet kubeadm kubectl;
+gum spin --spinner line --title "☸️ Installing kubelet kubeadm kubectl, version 1.28" -- apt-get install -y kubelet kubeadm kubectl;
 apt-mark hold kubelet kubeadm kubectl
 
 # echo "☸️ Installed kubelet kubeadm kubectl, version 1.28"
