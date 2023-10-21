@@ -12,7 +12,7 @@ curl -fsSL https://repo.charm.sh/apt/gpg.key | gpg --batch --yes --dearmor -o /e
 echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | tee /etc/apt/sources.list.d/charm.list &&
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | gpg --batch --yes --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg &&
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list &&
-apt update &&
+apt update && apt upgrade -y &&
 apt-get -y install gum
 
 gum style --foreground 255 'Pick the mode'
@@ -21,8 +21,6 @@ echo "$MODE deps will be installed"
 
 # assuming you're root
 
-gum spin --spinner line --title "🛜 Turning swap off, setting ip-forwarding on" -- apt update
-gum spin --spinner line --title "🛜 Turning swap off, setting ip-forwarding on" -- apt upgrade -y
 gum spin --spinner line --title "🛜 Turning swap off, setting ip-forwarding on" -- apt-get install -y apt-transport-https ca-certificates
 
 gum spin --spinner line --title "🛜 Turning swap off, setting ip-forwarding on" -- swapoff -a
@@ -44,6 +42,7 @@ gum spin --spinner line --title "🚢 Installing containerd-1.7.6 and runc-1.1.9
 gum spin --spinner line --title "🚢 Installing containerd-1.7.6 and runc-1.1.9" -- curl -L https://raw.githubusercontent.com/containerd/containerd/main/containerd.service -o /etc/systemd/system/containerd.service
 gum spin --spinner line --title "🚢 Installing containerd-1.7.6 and runc-1.1.9" -- systemctl daemon-reload
 gum spin --spinner line --title "🚢 Installing containerd-1.7.6 and runc-1.1.9" -- systemctl enable --now containerd
+
 echo "# these first two endpoint setting is where you configure crictl to containerd
 runtime-endpoint: unix:///run/containerd/containerd.sock
 image-endpoint: unix:///run/containerd/containerd.sock
@@ -51,17 +50,19 @@ timeout: 2
 debug: true
 pull-image-on-create: false" | sudo tee /etc/crictl.yaml
 
-gum spin --spinner line --title "☸️ Installing kubelet kubeadm kubectl, version 1.28" -- apt-get install -y kubelet kubeadm kubectl
-gum spin --spinner line --title "☸️ Installing kubelet kubeadm kubectl, version 1.28" -- apt-mark hold kubelet kubeadm kubectl
+echo "hi lewis.."
 
-gum spin --spinner line --title "🐝 Installing cilium" -- modprobe br_netfilter
-gum spin --spinner line --title "🐝 Installing cilium" -- echo "br_netfilter" | sudo tee /etc/modules-load.d/k8s.conf
-gum spin --spinner line --title "🐝 Installing cilium" -- systemctl restart systemd-modules-load
+gum spin --spinner line --title "☸️ Installing kubelet kubeadm kubectl, version 1.28" --show-output -- apt-get install -y kubelet kubeadm kubectl;
+gum spin --spinner line --title "☸️ Installing kubelet kubeadm kubectl, version 1.28" -- apt-mark hold kubelet kubeadm kubectl;
 
-gum spin --spinner line --title "🐝 Installing cilium" -- wget https://get.helm.sh/helm-v3.13.0-linux-amd64.tar.gz
-gum spin --spinner line --title "🐝 Installing cilium" -- tar -zxvf helm-v3.13.0-linux-amd64.tar.gz
-gum spin --spinner line --title "🐝 Installing cilium" -- mv linux-amd64/helm /usr/local/bin/helm
-gum spin --spinner line --title "🐝 Installing cilium" -- helm repo add cilium https://helm.cilium.io/
+gum spin --spinner line --title "🐝 Installing cilium" -- modprobe br_netfilter;
+gum spin --spinner line --title "🐝 Installing cilium" -- echo "br_netfilter" | sudo tee /etc/modules-load.d/k8s.conf;
+gum spin --spinner line --title "🐝 Installing cilium" -- systemctl restart systemd-modules-load;
+
+gum spin --spinner line --title "🐝 Installing cilium" -- wget https://get.helm.sh/helm-v3.13.0-linux-amd64.tar.gz;
+gum spin --spinner line --title "🐝 Installing cilium" -- tar -zxvf helm-v3.13.0-linux-amd64.tar.gz;
+gum spin --spinner line --title "🐝 Installing cilium" -- mv linux-amd64/helm /usr/local/bin/helm;
+gum spin --spinner line --title "🐝 Installing cilium" -- helm repo add cilium https://helm.cilium.io/;
 
 gum spin --spinner line --title "📦 Pulling k8s images" -- kubeadm config images pull
 
