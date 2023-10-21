@@ -10,9 +10,11 @@ so that I can either make a control plane or join into one. 👍
 
 Command:
 ```bash
-wget -O kasu.sh "https://raw.githubusercontent.com/lu1a/kasu/main/kasu.sh"
-chmod +x kasu.sh
-./kasu.sh control-plane|worker
+wget -O kasu.sh "https://raw.githubusercontent.com/lu1a/kasu/main/kasu.sh" && chmod +x kasu.sh && ./kasu.sh control-plane
+```
+or
+```bash
+wget -O kasu.sh "https://raw.githubusercontent.com/lu1a/kasu/main/kasu.sh" && chmod +x kasu.sh && ./kasu.sh worker && kubadm join YOUR_TOKENS_HERE
 ```
 
 Suggestions/help/PRs welcome!
