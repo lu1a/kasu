@@ -9,7 +9,7 @@ if ! command -v gum &> /dev/null then
     mkdir -p /etc/apt/keyrings
     curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
     echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
-    apt update && apt install gum -y
+    apt update && apt-get -y install gum 
 fi
 
 MODE=$(gum choose "control-plane" "worker")
