@@ -71,15 +71,15 @@ if [ $MODE == "control-plane" ]; then
 
     kubeadm init --skip-phases=addon/kube-proxy # TODO: allow possible VPN IP(s) in front for the TLS cert
 
-    gum spin --spinner line --title "✨ Final touches: KUBECONFIG=/etc/kubernetes/admin.conf, activating cilium" -- mkdir -p $HOME/.kube
-    gum spin --spinner line --title "✨ Final touches: KUBECONFIG=/etc/kubernetes/admin.conf, activating cilium" -- cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-    gum spin --spinner line --title "✨ Final touches: KUBECONFIG=/etc/kubernetes/admin.conf, activating cilium" -- chown $(id -u):$(id -g) $HOME/.kube/config
-    gum spin --spinner line --title "✨ Final touches: KUBECONFIG=/etc/kubernetes/admin.conf, activating cilium" -- export KUBECONFIG=/etc/kubernetes/admin.conf
+    gum spin --spinner line --title "✨ Final touches: activating cilium" -- mkdir -p $HOME/.kube
+    gum spin --spinner line --title "✨ Final touches: activating cilium" -- cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    gum spin --spinner line --title "✨ Final touches: activating cilium" -- chown $(id -u):$(id -g) $HOME/.kube/config
+    gum spin --spinner line --title "✨ Final touches: activating cilium" -- export KUBECONFIG=/etc/kubernetes/admin.conf
 
-    gum spin --spinner line --title "✨ Final touches: KUBECONFIG=/etc/kubernetes/admin.conf, activating cilium" -- curl -LO https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz
-    gum spin --spinner line --title "✨ Final touches: KUBECONFIG=/etc/kubernetes/admin.conf, activating cilium" -- sudo tar xzvfC cilium-linux-amd64.tar.gz /usr/local/bin
-    gum spin --spinner line --title "✨ Final touches: KUBECONFIG=/etc/kubernetes/admin.conf, activating cilium" -- rm cilium-linux-amd64.tar.gz
-    gum spin --spinner line --title "✨ Final touches: KUBECONFIG=/etc/kubernetes/admin.conf, activating cilium" -- cilium install
+    gum spin --spinner line --title "✨ Final touches: activating cilium" -- curl -LO https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz
+    gum spin --spinner line --title "✨ Final touches: activating cilium" -- sudo tar xzvfC cilium-linux-amd64.tar.gz /usr/local/bin
+    gum spin --spinner line --title "✨ Final touches: activating cilium" -- rm cilium-linux-amd64.tar.gz
+    gum spin --spinner line --title "✨ Final touches: activating cilium" -- cilium install
 
     echo "✅ Done! Check it yourself with crictl ps"
 elif [ $MODE == "worker" ]; then
