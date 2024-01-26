@@ -15,3 +15,6 @@ wget -O kasu.sh "https://raw.githubusercontent.com/lu1a/kasu/main/kasu.sh" && ch
 ```
 
 Suggestions/help/PRs welcome!
+
+# TODO
+- add WASM runtime under containerd (in addition to runc), and load up the runtime class into the cluster automatically on CP init.
