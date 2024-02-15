@@ -10,8 +10,8 @@ apt-get install -y curl
 mkdir -p /etc/apt/keyrings &&
 curl -fsSL https://repo.charm.sh/apt/gpg.key | gpg --batch --yes --dearmor -o /etc/apt/keyrings/charm.gpg &&
 echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | tee /etc/apt/sources.list.d/charm.list &&
-curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | gpg --batch --yes --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg &&
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list &&
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | gpg --batch --yes --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg &&
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list &&
 apt update && apt upgrade -y &&
 apt-get -y install gum
 
@@ -29,19 +29,19 @@ gum spin --spinner line --title "🛜 Turning swap off, setting ip-forwarding on
 gum spin --spinner line --title "🛜 Turning swap off, setting ip-forwarding on" -- sysctl net.ipv4.ip_forward=1
 gum spin --spinner line --title "🛜 Turning swap off, setting ip-forwarding on" -- sed -i '/#net.ipv4.ip_forward=1/s/^#//' /etc/sysctl.conf
 
-gum spin --spinner line --title "🚢 Installing containerd-1.7.6 and runc-1.1.9" -- wget https://github.com/containerd/containerd/releases/download/v1.7.6/containerd-1.7.6-linux-amd64.tar.gz
-gum spin --spinner line --title "🚢 Installing containerd-1.7.6 and runc-1.1.9" -- tar Cxzvf /usr/local containerd-1.7.6-linux-amd64.tar.gz
-gum spin --spinner line --title "🚢 Installing containerd-1.7.6 and runc-1.1.9" -- wget https://github.com/opencontainers/runc/releases/download/v1.1.9/runc.amd64
-gum spin --spinner line --title "🚢 Installing containerd-1.7.6 and runc-1.1.9" -- install -m 755 runc.amd64 /usr/local/sbin/runc
-gum spin --spinner line --title "🚢 Installing containerd-1.7.6 and runc-1.1.9" -- wget https://github.com/containernetworking/plugins/releases/download/v1.3.0/cni-plugins-linux-amd64-v1.3.0.tgz
-gum spin --spinner line --title "🚢 Installing containerd-1.7.6 and runc-1.1.9" -- mkdir -p /opt/cni/bin
-gum spin --spinner line --title "🚢 Installing containerd-1.7.6 and runc-1.1.9" -- tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v1.3.0.tgz
-gum spin --spinner line --title "🚢 Installing containerd-1.7.6 and runc-1.1.9" -- mkdir /etc/containerd
+gum spin --spinner line --title "🚢 Installing containerd-1.7.13 and runc-1.1.12" -- wget https://github.com/containerd/containerd/releases/download/v1.7.13/containerd-1.7.13-linux-amd64.tar.gz
+gum spin --spinner line --title "🚢 Installing containerd-1.7.13 and runc-1.1.12" -- tar Cxzvf /usr/local containerd-1.7.13-linux-amd64.tar.gz
+gum spin --spinner line --title "🚢 Installing containerd-1.7.13 and runc-1.1.12" -- wget https://github.com/opencontainers/runc/releases/download/v1.1.12/runc.amd64
+gum spin --spinner line --title "🚢 Installing containerd-1.7.13 and runc-1.1.12" -- install -m 755 runc.amd64 /usr/local/sbin/runc
+gum spin --spinner line --title "🚢 Installing containerd-1.7.13 and runc-1.1.12" -- wget https://github.com/containernetworking/plugins/releases/download/v1.4.0/cni-plugins-linux-amd64-v1.4.0.tgz
+gum spin --spinner line --title "🚢 Installing containerd-1.7.13 and runc-1.1.12" -- mkdir -p /opt/cni/bin
+gum spin --spinner line --title "🚢 Installing containerd-1.7.13 and runc-1.1.12" -- tar Cxzvf /opt/cni/bin cni-plugins-linux-amd64-v1.4.0.tgz
+gum spin --spinner line --title "🚢 Installing containerd-1.7.13 and runc-1.1.12" -- mkdir /etc/containerd
 containerd config default | tee /etc/containerd/config.toml
-gum spin --spinner line --title "🚢 Installing containerd-1.7.6 and runc-1.1.9" -- sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
-gum spin --spinner line --title "🚢 Installing containerd-1.7.6 and runc-1.1.9" -- curl -L https://raw.githubusercontent.com/containerd/containerd/main/containerd.service -o /etc/systemd/system/containerd.service
-gum spin --spinner line --title "🚢 Installing containerd-1.7.6 and runc-1.1.9" -- systemctl daemon-reload
-gum spin --spinner line --title "🚢 Installing containerd-1.7.6 and runc-1.1.9" -- systemctl enable --now containerd
+gum spin --spinner line --title "🚢 Installing containerd-1.7.13 and runc-1.1.12" -- sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
+gum spin --spinner line --title "🚢 Installing containerd-1.7.13 and runc-1.1.12" -- curl -L https://raw.githubusercontent.com/containerd/containerd/main/containerd.service -o /etc/systemd/system/containerd.service
+gum spin --spinner line --title "🚢 Installing containerd-1.7.13 and runc-1.1.12" -- systemctl daemon-reload
+gum spin --spinner line --title "🚢 Installing containerd-1.7.13 and runc-1.1.12" -- systemctl enable --now containerd
 
 echo "# these first two endpoint setting is where you configure crictl to containerd
 runtime-endpoint: unix:///run/containerd/containerd.sock
@@ -50,17 +50,15 @@ timeout: 2
 debug: true
 pull-image-on-create: false" | sudo tee /etc/crictl.yaml
 
-echo "hi lewis.."
-
-gum spin --spinner line --title "☸️ Installing kubelet kubeadm kubectl, version 1.28" --show-output -- apt-get install -y kubelet kubeadm kubectl;
-gum spin --spinner line --title "☸️ Installing kubelet kubeadm kubectl, version 1.28" -- apt-mark hold kubelet kubeadm kubectl;
+gum spin --spinner line --title "☸️ Installing kubelet kubeadm kubectl, version 1.29" --show-output -- apt-get install -y kubelet kubeadm kubectl;
+gum spin --spinner line --title "☸️ Installing kubelet kubeadm kubectl, version 1.29" -- apt-mark hold kubelet kubeadm kubectl;
 
 gum spin --spinner line --title "🐝 Installing cilium" -- modprobe br_netfilter;
 gum spin --spinner line --title "🐝 Installing cilium" -- echo "br_netfilter" | sudo tee /etc/modules-load.d/k8s.conf;
 gum spin --spinner line --title "🐝 Installing cilium" -- systemctl restart systemd-modules-load;
 
-gum spin --spinner line --title "🐝 Installing cilium" -- wget https://get.helm.sh/helm-v3.13.0-linux-amd64.tar.gz;
-gum spin --spinner line --title "🐝 Installing cilium" -- tar -zxvf helm-v3.13.0-linux-amd64.tar.gz;
+gum spin --spinner line --title "🐝 Installing cilium" -- wget https://get.helm.sh/helm-v3.14.1-linux-amd64.tar.gz;
+gum spin --spinner line --title "🐝 Installing cilium" -- tar -zxvf helm-v3.14.1-linux-amd64.tar.gz;
 gum spin --spinner line --title "🐝 Installing cilium" -- mv linux-amd64/helm /usr/local/bin/helm;
 gum spin --spinner line --title "🐝 Installing cilium" -- helm repo add cilium https://helm.cilium.io/;
 
